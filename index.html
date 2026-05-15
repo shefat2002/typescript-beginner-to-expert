@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Roadmap — Beginner to Expert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e4e4e7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #3178c6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #71717a;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            background: #27272a;
+            border-radius: 999px;
+            height: 12px;
+            margin: 2rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3178c6, #60a5fa);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 999px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a1a1aa;
+            margin-top: -1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .level {
+            background: #27272a;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #3f3f46;
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .level-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .level-badge {
+            background: #3178c6;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .level-badge.level-1 { background: #22c55e; }
+        .level-badge.level-2 { background: #3b82f6; }
+        .level-badge.level-3 { background: #8b5cf6; }
+        .level-badge.level-4 { background: #f59e0b; }
+        .level-badge.level-5 { background: #ef4444; }
+
+        .level-progress {
+            font-size: 0.85rem;
+            color: #71717a;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .level.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .level.collapsed .topics {
+            display: none;
+        }
+
+        .topics {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .topic {
+            background: #18181b;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .topic:hover {
+            background: #1f1f23;
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+
+        .topic.completed {
+            opacity: 0.6;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #52525b;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        input[type="checkbox"]:checked {
+            background: #3178c6;
+            border-color: #3178c6;
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input[type="checkbox"]:hover {
+            border-color: #3178c6;
+        }
+
+        .topic-title {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .topic.completed .topic-title {
+            text-decoration: line-through;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+            color: #71717a;
+        }
+
+        .topic.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .topic-details {
+            display: none;
+            padding: 0 1rem 1rem 3.5rem;
+            border-top: 1px solid #27272a;
+        }
+
+        .topic.expanded .topic-details {
+            display: block;
+        }
+
+        .detail-section {
+            margin-top: 1rem;
+        }
+
+        .detail-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #71717a;
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-label.what { color: #60a5fa; }
+        .detail-label.why { color: #4ade80; }
+        .detail-label.learn { color: #fbbf24; }
+        .detail-label.practice { color: #f472b6; }
+        .detail-label.note { color: #a78bfa; }
+
+        .detail-content {
+            font-size: 0.9rem;
+            color: #d4d4d8;
+            line-height: 1.6;
+        }
+
+        .detail-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .detail-content li {
+            padding-left: 1.2rem;
+            position: relative;
+            margin-bottom: 0.35rem;
+        }
+
+        .detail-content li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #52525b;
+        }
+
+        .detail-content code {
+            background: #27272a;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #60a5fa;
+        }
+
+        .projects {
+            background: #3f3f46;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .projects h3 {
+            margin-bottom: 1rem;
+            color: #f4f4f5;
+        }
+
+        .project-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .project-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #18181b;
+            border-radius: 8px;
+        }
+
+        .project-item:hover {
+            background: #1f1f23;
+        }
+
+        .project-focus {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: #71717a;
+            background: #27272a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset {
+            background: #27272a;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+        }
+
+        .btn-reset:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-export {
+            background: #27272a;
+            color: #22c55e;
+            border: 1px solid #22c55e;
+        }
+
+        .btn-export:hover {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-import {
+            background: #27272a;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+
+        .btn-import:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>TypeScript Roadmap</h1>
+            <p class="subtitle">Beginner → Expert — Track your progress</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">0% complete</p>
+        </header>
+
+        <main id="roadmap"></main>
+
+        <div class="actions">
+            <input type="file" id="fileInput" accept=".json" onchange="importProgress(event)">
+            <button class="btn-import" onclick="document.getElementById('fileInput').click()">Import Progress</button>
+            <button class="btn-export" onclick="exportProgress()">Export Progress</button>
+            <button class="btn-reset" onclick="resetProgress()">Reset Progress</button>
+        </div>
+    </div>
+
+    <script>
+        const roadmapData = [
+            {
+                level: 1,
+                title: "Foundations",
+                topics: [
+                    {
+                        title: "Type Annotations vs Type Inference",
+                        what: "Explicitly telling TypeScript what type something is vs letting it figure it out.",
+                        why: "Type inference is cleaner. Use annotations for function returns and public APIs. Let inference handle the rest.",
+                        learn: ["Primitive types: string, number, boolean, null, undefined, symbol, bigint", "When to annotate: function parameters, return types, public interfaces", "When to rely on inference: local variables, obvious contexts"],
+                        practice: "Write same function with and without annotations. Compare readability."
+                    },
+                    {
+                        title: "Arrays, Tuples, and Readonly",
+                        what: "Collections with type safety. Tuples have fixed length with known types at each position.",
+                        why: "Catch index errors, prevent wrong data shapes, document intent.",
+                        learn: ["number[] vs Array<number> — prefer number[] for readability", "Tuples: [string, number] — fixed position types", "readonly string[] — prevent mutation", "as const — creates readonly literal types"],
+                        note: "Common pitfall: Using any[] defeats purpose. Always specify element type."
+                    },
+                    {
+                        title: "Functions: Parameters, Returns, and Void",
+                        what: "Typing what goes in and what comes out.",
+                        why: "Functions are where bugs hide. Types act as contracts between caller and implementation.",
+                        learn: ["Parameter types: required", "Return types: optional but recommended for public APIs", "void: functions that return nothing", "never: functions that never return (throw always, infinite loop)"],
+                        practice: "Best practice: Annotate return types on exported functions. Let inference handle internal helpers."
+                    },
+                    {
+                        title: "Objects and Interfaces",
+                        what: "Describing the shape of data.",
+                        why: "Most data in JS is objects. Interfaces document expected structure.",
+                        learn: ["Interface declaration syntax", "Optional properties: name?: string", "Readonly properties: readonly id: number", "Excess property checks — why they matter", "Index signatures: [key: string]: unknown"],
+                        note: "Interface vs Type: Use interface for object shapes that can be extended. Use type for unions, intersections, aliases."
+                    },
+                    {
+                        title: "Union and Literal Types",
+                        what: "Values that can be one of several types.",
+                        why: "Real data isn't always one type. Unions model 'either/or'. Literals model specific values.",
+                        learn: ["Union: string | number", "Literal: 'click' | 'submit' | 'cancel'", "String literal unions = enums alternative", "Narrowing: how TypeScript refines unions in conditionals"],
+                        practice: "Pattern: Use literal unions for state, status, mode — anything with discrete known values."
+                    },
+                    {
+                        title: "Type Guards and Narrowing",
+                        what: "Code that helps TypeScript understand types in specific scopes.",
+                        why: "TypeScript can't know everything. You teach it runtime checks.",
+                        learn: ["typeof: for primitives", "instanceof: for classes", "in: for object properties", "Equality checks: value === null", "Type predicates: value is string"],
+                        note: "Key insight: Narrowing is how you safely use unions."
+                    },
+                    {
+                        title: "Any, Unknown, and Never",
+                        what: "Escape hatches and bottom types.",
+                        why: "Sometimes you need flexibility. any is unsafe flexibility. unknown is safe flexibility.",
+                        learn: ["any: disables type checking — avoid unless absolutely necessary", "unknown: type-safe any — must narrow before use", "never: impossible type — useful for exhaustiveness checks"],
+                        practice: "Rule: Use unknown instead of any. Only accept any from badly-typed libraries."
+                    },
+                    {
+                        title: "Structural Typing vs Duck Typing",
+                        what: "TypeScript checks shapes, not names. If it quacks like a duck, it's a duck.",
+                        why: "Enables composition and mocking. Don't need explicit inheritance.",
+                        learn: ["Excess Property Checks: only on direct object literals", "Assignability: when can A be assigned to B?", "How interfaces don't have runtime representation"],
+                        note: "Mental model: Types are sets of values. A value belongs to a type if it has all required properties."
+                    }
+                ]
+            },
+            {
+                level: 2,
+                title: "Intermediate",
+                topics: [
+                    {
+                        title: "Type Aliases vs Interfaces",
+                        what: "Two ways to name types.",
+                        why: "Interfaces: extensible, better for object shapes, declaration merging. Type aliases: unions, intersections, utility types, non-object shapes.",
+                        learn: ["When to use each", "Interface merging: same name combines", "Type aliases cannot be changed after creation"],
+                        practice: "Heuristic: Interface for shapes you might extend. Type for everything else."
+                    },
+                    {
+                        title: "Enums",
+                        what: "Named constants with auto-assigned values.",
+                        why: "Self-documenting code, prevent typos in string literals.",
+                        learn: ["Numeric enums: auto-incrementing", "String enums: explicit values", "Const enums: compiled away", "Union of literals alternative"],
+                        note: "Trade-off: Enums have runtime cost. String literal unions don't. Consider if runtime value matters."
+                    },
+                    {
+                        title: "Type Assertions",
+                        what: "Telling TypeScript 'I know better than you.'",
+                        why: "Sometimes TypeScript can't infer correctly. Sometimes you're working with loosely-typed libraries.",
+                        learn: ["as syntax: preferred", "<> syntax: JSX conflict", "Double assertion: value as unknown as OtherType", "Non-null assertion: value! — use sparingly"],
+                        note: "Danger zone: Assertions bypass type checking. Use only when you're certain."
+                    },
+                    {
+                        title: "Generics: The Basics",
+                        what: "Types that take other types as parameters.",
+                        why: "Write code that works with multiple types while maintaining type safety.",
+                        learn: ["Generic functions: function identity<T>(arg: T): T", "Type inference: TypeScript often figures out T", "Generic interfaces: interface Box<T> { value: T }", "Constraints: <T extends Lengthwise>"],
+                        note: "Analogy: Generics are functions at type level. They take types in, return types out."
+                    },
+                    {
+                        title: "Classes and Access Modifiers",
+                        what: "ES6 classes with TypeScript type features.",
+                        why: "Sometimes you need OO patterns. TypeScript makes classes safer.",
+                        learn: ["Property modifiers: public, private, protected", "readonly properties", "Parameter properties: constructor shorthand", "Abstract classes and methods"],
+                        note: "Many TS codebases prefer functions and composition over classes. Use classes when appropriate, not by default."
+                    },
+                    {
+                        title: "Utility Types: Built-in Tools",
+                        what: "Standard type transformations built into TypeScript.",
+                        why: "Common patterns. Don't reinvent.",
+                        learn: ["Partial<T>: make all props optional", "Required<T>: make all props required", "Readonly<T>: make all props readonly", "Pick<T, K>: select specific keys", "Omit<T, K>: remove specific keys", "Record<K, T>: create object type from keys"],
+                        practice: "Practice: Try implementing each yourself. You'll understand how they work."
+                    },
+                    {
+                        title: "Function Typing Patterns",
+                        what: "Different ways to type functions.",
+                        why: "Functions are first-class. Need to type them in all contexts.",
+                        learn: ["Function type expressions: (a: string, b: number) => boolean", "Call signatures: overload behavior in objects", "Function overloads: different behaviors for different inputs", "This typing: explicit this parameter"]
+                    },
+                    {
+                        title: "Module System",
+                        what: "How code is organized and shared.",
+                        why: "No more global namespace. Explicit dependencies.",
+                        learn: ["ES modules: import/export", "Type-only imports: import type { User }", "Barrel files: re-exports from index", "Module resolution: how TS finds files"],
+                        practice: "Best practice: Use ES modules. Type-only imports for things only used in type position."
+                    }
+                ]
+            },
+            {
+                level: 3,
+                title: "Advanced",
+                topics: [
+                    {
+                        title: "Conditional Types",
+                        what: "Types that choose based on conditions.",
+                        why: "Transform types based on their structure.",
+                        learn: ["Syntax: T extends U ? X : Y", "Distributive conditional types: distribute over unions", "infer: extract types from within other types", "Predefined: Awaited<T>, ReturnType<T>, Parameters<T>"],
+                        note: "Breakthrough moment: Realize conditional types are pattern matching at type level."
+                    },
+                    {
+                        title: "Mapped Types",
+                        what: "Transform every property in an object type.",
+                        why: "Modify existing types consistently.",
+                        learn: ["Syntax: [P in keyof T]: T[P]", "Adding modifiers: readonly, ?", "Removing modifiers: -readonly, -?", "Key remapping: as"],
+                        note: "Use cases: Partial<T> and Readonly<T> are mapped types. Create your own transformations."
+                    },
+                    {
+                        title: "Template Literal Types",
+                        what: "Types built from string operations.",
+                        why: "Type strings that follow patterns. Event handlers, CSS classes, API paths.",
+                        learn: ["Basic template literals: `on${Capitalize<T>}`", "String manipulation: Uppercase, Lowercase, Capitalize, Uncapitalize", "Inference from templates", "Building DSL types"],
+                        note: "Real-world use: Type-safe event emitter, styled components, routing."
+                    },
+                    {
+                        title: "Discriminated Unions",
+                        what: "Unions where each member has a common property with unique literal value.",
+                        why: "Exhaustive handling without default cases. Type-safe state machines.",
+                        learn: ["Discriminant property: kind, type, status", "Exhaustiveness checking with never", "Narrowing works automatically"],
+                        practice: "Pattern: The 'tagged union' — favorite FP pattern in TypeScript."
+                    },
+                    {
+                        title: "Type Guards: Custom Predicates",
+                        what: "Functions that tell TypeScript a type is more specific than it knows.",
+                        why: "Runtime checks that inform the type system.",
+                        learn: ["Type predicate syntax: value is StringType", "Assertion functions: asserts value is Type", "is keyword for guards"],
+                        note: "Example: Array.isArray() is built-in guard. Write your own for domain types."
+                    },
+                    {
+                        title: "Branded Types",
+                        what: "Types that are nominally distinct despite same structure.",
+                        why: "Prevent mixing values that shouldn't mix. USD vs EUR amounts.",
+                        learn: ["Brand pattern: type UserId = string & { readonly __brand: unique symbol }", "Validation functions that return branded types", "Why opaque types matter"],
+                        note: "Use case: IDs from different services, currencies, validated inputs."
+                    },
+                    {
+                        title: "Recursive Types",
+                        what: "Types that reference themselves.",
+                        why: "Model nested structures: JSON, trees, linked lists.",
+                        learn: ["Basic recursion: type Json = string | number | boolean | Json[] | { [key: string]: Json }", "Tail recursion optimization considerations", "Depth limits in TS"],
+                        note: "Caution: TypeScript has recursion depth limits. Very deep types may fail."
+                    },
+                    {
+                        title: "Index Access Types",
+                        what: "Get type of a property using bracket notation.",
+                        why: "Don't repeat yourself. Extract types from existing types.",
+                        learn: ["type Name = Person['name']", "Nested access: type AddressCity = Person['address']['city']", "Array element: type Items = Array<string>[number]"],
+                        practice: "Pattern: Use index access to avoid duplicating type definitions."
+                    }
+                ]
+            },
+            {
+                level: 4,
+                title: "Expert",
+                topics: [
+                    {
+                        title: "Advanced Conditional Patterns",
+                        what: "Complex type logic using conditionals.",
+                        why: "Solve real-world type transformation problems.",
+                        learn: ["Distributed vs non-distributed conditionals", "Tuple to union: T[number]", "Union to tuple: harder, requires recursive tricks", "Type-level string manipulation"],
+                        note: "Expert skill: Read complex utility type definitions and understand what they do."
+                    },
+                    {
+                        title: "Key Remapping in Mapped Types",
+                        what: "Transform both keys and values in mapped types.",
+                        why: "Remove keys, rename keys, filter by value type.",
+                        learn: ["as clause in mapped types", "Conditional key remapping", "OmitByType, PickByType patterns"],
+                        note: "Use case: Deep Omit, deep Pick, filtering object types."
+                    },
+                    {
+                        title: "Type Manipulation: Deep Transformations",
+                        what: "Recursively transform nested object types.",
+                        why: "Handle deeply nested configuration, partial updates, readonly wrapping.",
+                        learn: ["DeepReadonly<T>: make everything readonly recursively", "DeepPartial<T>: make everything optional recursively", "DeepRequired<T>: make everything required recursively", "Handling arrays and tuples in deep types"]
+                    },
+                    {
+                        title: "Variance: Covariant, Contravariant, Invariant",
+                        what: "How subtypes relate in complex types.",
+                        why: "Understand why some type assignments work and others don't.",
+                        learn: ["Functions are contravariant in parameters, covariant in returns", "Arrays are covariant (bivariant in older TS)", "Why strictFunctionTypes matters"],
+                        note: "Why it matters: Explains counterintuitive type errors. Helps design better APIs."
+                    },
+                    {
+                        title: "Declaration Merging",
+                        what: "Multiple declarations for same name combine.",
+                        why: "Extend types from libraries you don't control.",
+                        learn: ["Interface merging: same name = combined", "Namespace merging", "Module augmentation: declare module 'library'", "global augmentation"],
+                        note: "Use case: Add properties to Window, augment Express.Request, extend library types."
+                    },
+                    {
+                        title: "Decorators",
+                        what: "Functions that modify classes, methods, properties.",
+                        why: "Metaprogramming. Cross-cutting concerns: logging, validation, memoization.",
+                        learn: ["Class decorators", "Method decorators", "Property decorators", "Parameter decorators", "Decorator composition order"],
+                        note: "Status: Stage 3 TC39 proposal. TS has legacy implementation. New proposal coming."
+                    },
+                    {
+                        title: "Module Resolution Strategies",
+                        what: "How TypeScript finds files when you import.",
+                        why: "Understanding prevents module resolution errors.",
+                        learn: ["node vs node16 / nodenext", "paths mapping in tsconfig", "moduleResolution option", "Package.json exports field", "package.json types field"],
+                        note: "Debug: Use tsc --traceResolution to see how modules are found."
+                    },
+                    {
+                        title: "tsconfig: Every Option Matters",
+                        what: "TypeScript configuration options.",
+                        why: "Strict settings catch bugs early. Loose settings let bugs through.",
+                        learn: ["strict: enable all strict options", "noUncheckedIndexedAccess: safer array/object access", "exactOptionalPropertyTypes: undefined not same as missing", "noImplicitOverride: explicit override keyword", "noPropertyAccessFromIndexSignature: force dot notation"],
+                        practice: "Recommendation: Start with strict: true. Add more strictness over time."
+                    },
+                    {
+                        title: "Type-Level Programming",
+                        what: "Using the type system as a programming language.",
+                        why: "Catch errors at compile time, encode invariants, enable IDE autocomplete.",
+                        learn: ["Type-level arithmetic (using tuple lengths)", "Type-level strings manipulation", "Turing completeness at type level"],
+                        note: "Philosophy: Push complexity into types. Runtime becomes simple and correct."
+                    }
+                ]
+            },
+            {
+                level: 5,
+                title: "Architectural Mastery",
+                topics: [
+                    {
+                        title: "Domain-Driven Design with Types",
+                        what: "Encode domain rules directly in types.",
+                        why: "Make invalid states unrepresentable.",
+                        learn: ["Value objects with branded types", "Entity types with ID branding", "Aggregate boundaries", "Domain events as discriminated unions"],
+                        practice: "Pattern: Type-safe currency, validated emails, non-empty strings."
+                    },
+                    {
+                        title: "State Machines with Types",
+                        what: "Model state as typed transitions.",
+                        why: "Prevent impossible state combinations. No 'loading but also error'.",
+                        learn: ["State as discriminated union", "Events as typed objects", "Transition functions with exhaustive checks", "XState-style type safety"],
+                        note: "Benefit: Can't forget to handle a state. Compiler enforces exhaustiveness."
+                    },
+                    {
+                        title: "Type-Safe API Clients",
+                        what: "Generated or typed API interfaces.",
+                        why: "No mismatch between frontend and backend types.",
+                        learn: ["OpenAPI/Swagger to TypeScript generation", "Generic API wrappers", "Typed routes and query params", "Response typing with zod or similar"],
+                        note: "Tools: openapi-typescript, orval, zod, tRPC."
+                    },
+                    {
+                        title: "Monorepo Type Sharing",
+                        what: "Share types across packages without duplication.",
+                        why: "Single source of truth. Changes propagate automatically.",
+                        learn: ["Workspace configuration (npm, pnpm, yarn)", "packages/types pattern", "package.json exports field", "Path mapping for clean imports"],
+                        note: "Tools: Turborepo, Nx, pnpm workspaces."
+                    },
+                    {
+                        title: "Library Authoring",
+                        what: "Publish packages with excellent TypeScript support.",
+                        why: "Good types = good developer experience.",
+                        learn: ["declaration: true in tsconfig", "declarationMap for go-to-definition", "exports field with types condition", "typesVersions for version-specific types", "DefinitelyTyped for external types"],
+                        practice: "Best practice: Ship types with your package. Don't make users npm install @types/your-package."
+                    },
+                    {
+                        title: "Performance: Type Checking Speed",
+                        what: "Keep type checking fast as codebase grows.",
+                        why: "Slow type checks hurt productivity.",
+                        learn: ["Project references: split codebase", "Incremental compilation: tsbuildinfo", "skipLibCheck: skip .d.ts files", "Exclude tests from production check", "tsc --watch for continuous checking"],
+                        note: "Rule of thumb: If type checking takes > 30 seconds, investigate project references."
+                    },
+                    {
+                        title: "Testing Types",
+                        what: "Verify type behavior without runtime code.",
+                        why: "Types are part of your API. Test them.",
+                        learn: ["Type assertions in tests: expectType<T>(value)", "dtslint: dedicated type testing", "tsd: simplified type testing", "Testing type errors: negative test cases"],
+                        note: "Tools: tsd, ts-expect-error, @type-challenges/tsd."
+                    },
+                    {
+                        title: "Migration Strategies",
+                        what: "Gradually add TypeScript to JavaScript codebases.",
+                        why: "Big bang rewrite is risky and expensive.",
+                        learn: ["allowJs: mix JS and TS", "checkJs: type-check JS files", "Incremental renaming: .js → .ts", "// @ts-check in JSDoc", "// @ts-ignore and // @ts-expect-error for temporary issues"],
+                        practice: "Strategy: Start with new files in TS. Gradually migrate frequently-changed files."
+                    },
+                    {
+                        title: "Generic Component Patterns",
+                        what: "Reusable components in React/Vue/Svelte with proper generics.",
+                        why: "Don't repeat component variations for different data types.",
+                        learn: ["Generic function components", "Generic props interfaces", "Type inference from props", "Constraining generics in components"],
+                        note: "Example: Generic table component that types rows based on data prop."
+                    },
+                    {
+                        title: "Architectural Decision Records",
+                        what: "Document why you made type-level decisions.",
+                        why: "Types are architecture. Decisions need context.",
+                        learn: ["When to use strict vs loose types", "Branded types vs runtime validation", "When to use any (and document why)", "Library integration type patterns"],
+                        note: "Philosophy: Types are communication. Future you (and teammates) need context."
+                    }
+                ]
+            }
+        ];
+
+        const projects = [
+            { title: "CLI Tool", focus: "Node.js CLI with proper types, config files" },
+            { title: "React App", focus: "Component typing, hooks, context" },
+            { title: "API Client", focus: "Generic API wrapper, typed responses" },
+            { title: "State Manager", focus: "Redux/Zustand with typed reducers" },
+            { title: "Type Library", focus: "Published npm package with declaration files" },
+            { title: "Monorepo", focus: "Shared types package, workspace config" }
+        ];
+
+        let progress = JSON.parse(localStorage.getItem('tsRoadmap')) || {};
+        let expandedTopics = JSON.parse(localStorage.getItem('tsRoadmapExpanded')) || {};
+
+        function init() {
+            renderRoadmap();
+            renderProjects();
+            updateProgress();
+        }
+
+        function saveExpanded() {
+            localStorage.setItem('tsRoadmapExpanded', JSON.stringify(expandedTopics));
+        }
+
+        function renderRoadmap() {
+            const container = document.getElementById('roadmap');
+            container.innerHTML = roadmapData.map(level => `
+                <div class="level" id="level-${level.level}">
+                    <div class="level-header" onclick="toggleLevel(${level.level})">
+                        <div class="level-title">
+                            <span class="level-badge level-${level.level}">Level ${level.level}</span>
+                            ${level.title}
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="level-progress" id="progress-${level.level}">0/${level.topics.length}</span>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                    </div>
+                    <div class="topics">
+                        ${level.topics.map((topic, i) => {
+                            const topicId = `l${level.level}t${i}`;
+                            const isExpanded = expandedTopics[topicId];
+                            return `
+                                <div class="topic ${isCompleted(level.level, i) ? 'completed' : ''} ${isExpanded ? 'expanded' : ''}" id="${topicId}">
+                                    <div class="topic-header">
+                                        <input type="checkbox"
+                                            ${isCompleted(level.level, i) ? 'checked' : ''}
+                                            onchange="toggleTopic(${level.level}, ${i})">
+                                        <span class="topic-title">${topic.title}</span>
+                                        <span class="expand-icon" onclick="toggleTopicDetails('${topicId}')">▼</span>
+                                    </div>
+                                    <div class="topic-details">
+                                        ${renderTopicDetails(topic)}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTopicDetails(topic) {
+            let html = '';
+
+            if (topic.what) {
+                html += `
+                    <div class="detail-section">
+                        <div class="detail-label what">
+                            <span>◆</span> What
+                        </div>
+                        <div class="detail-content">${topic.what}</div>
+                    </div>
+                `;
+            }
+
+            if (topic.why) {
+                html += `
+                    <div class="detail-section">
+                        <div class="detail-label why">
+                            <span>◆</span> Why
+                        </div>
+                        <div class="detail-content">${topic.why}</div>
+                    </div>
+                `;
+            }
+
+            if (topic.learn && topic.learn.length) {
+                html += `
+                    <div class="detail-section">
+                        <div class="detail-label learn">
+                            <span>◆</span> Learn
+                        </div>
+                        <div class="detail-content"><ul>${topic.learn.map(item => `<li>${item}</li>`).join('')}</ul></div>
+                    </div>
+                `;
+            }
+
+            if (topic.practice) {
+                html += `
+                    <div class="detail-section">
+                        <div class="detail-label practice">
+                            <span>◆</span> Practice
+                        </div>
+                        <div class="detail-content">${topic.practice}</div>
+                    </div>
+                `;
+            }
+
+            if (topic.note) {
+                html += `
+                    <div class="detail-section">
+                        <div class="detail-label note">
+                            <span>◆</span> Note
+                        </div>
+                        <div class="detail-content">${topic.note}</div>
+                    </div>
+                `;
+            }
+
+            return html;
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('roadmap');
+            const projectHtml = `
+                <div class="projects">
+                    <h3>Practice Projects</h3>
+                    <div class="project-list">
+                        ${projects.map((project, i) => `
+                            <label class="project-item ${isProjectCompleted(i) ? 'completed' : ''}">
+                                <input type="checkbox"
+                                    ${isProjectCompleted(i) ? 'checked' : ''}
+                                    onchange="toggleProject(${i})">
+                                <span class="topic-title">${project.title}</span>
+                                <span class="project-focus">${project.focus}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += projectHtml;
+        }
+
+        function isCompleted(level, index) {
+            const key = `l${level}t${index}`;
+            return progress[key] === true;
+        }
+
+        function isProjectCompleted(index) {
+            const key = `p${index}`;
+            return progress[key] === true;
+        }
+
+        function toggleTopic(level, index) {
+            const key = `l${level}t${index}`;
+            progress[key] = !progress[key];
+            saveProgress();
+            updateProgress();
+            updateTopicUI(level, index);
+        }
+
+        function toggleProject(index) {
+            const key = `p${index}`;
+            progress[key] = !progress[key];
+            saveProgress();
+            updateProgress();
+            updateProjectUI(index);
+        }
+
+        function toggleTopicDetails(topicId) {
+            const topicEl = document.getElementById(topicId);
+            topicEl.classList.toggle('expanded');
+            expandedTopics[topicId] = !expandedTopics[topicId];
+            saveExpanded();
+        }
+
+        function updateTopicUI(level, index) {
+            const topicEl = document.getElementById(`l${level}t${index}`);
+            if (topicEl) {
+                topicEl.classList.toggle('completed', isCompleted(level, index));
+            }
+            updateLevelProgress(level);
+        }
+
+        function updateProjectUI(index) {
+            const projectEl = document.querySelectorAll('.project-item')[index];
+            if (projectEl) {
+                projectEl.classList.toggle('completed', isProjectCompleted(index));
+            }
+        }
+
+        function updateLevelProgress(level) {
+            const levelData = roadmapData.find(l => l.level === level);
+            const completed = levelData.topics.filter((_, i) => isCompleted(level.level, i)).length;
+            document.getElementById(`progress-${level}`).textContent = `${completed}/${levelData.topics.length}`;
+        }
+
+        function updateProgress() {
+            let total = 0;
+            let completed = 0;
+
+            roadmapData.forEach(level => {
+                level.topics.forEach((_, i) => {
+                    total++;
+                    if (isCompleted(level.level, i)) completed++;
+                });
+            });
+
+            projects.forEach((_, i) => {
+                total++;
+                if (isProjectCompleted(i)) completed++;
+            });
+
+            const percentage = Math.round((completed / total) * 100);
+            document.getElementById('progressFill').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = `${percentage}% complete (${completed}/${total} items)`;
+
+            roadmapData.forEach(level => updateLevelProgress(level.level));
+        }
+
+        function saveProgress() {
+            localStorage.setItem('tsRoadmap', JSON.stringify(progress));
+        }
+
+        function toggleLevel(level) {
+            document.getElementById(`level-${level}`).classList.toggle('collapsed');
+        }
+
+        function resetProgress() {
+            if (confirm('Reset all progress? This cannot be undone.')) {
+                progress = {};
+                saveProgress();
+                location.reload();
+            }
+        }
+
+        function exportProgress() {
+            const data = {
+                date: new Date().toISOString(),
+                progress: progress,
+                expandedTopics: expandedTopics,
+                percentage: document.getElementById('progressText').textContent
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ts-roadmap-progress.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importProgress(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.progress) {
+                        progress = data.progress;
+                        saveProgress();
+                    }
+                    if (data.expandedTopics) {
+                        expandedTopics = data.expandedTopics;
+                        saveExpanded();
+                    }
+                    location.reload();
+                } catch (err) {
+                    alert('Invalid progress file');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        init();
+    </script>
+</body>
+</html>
