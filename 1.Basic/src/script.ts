@@ -32,7 +32,7 @@ let b: any;
 b = 10;
 b = "Shefat";
 
-let c: (string|number|boolean)[] = []; // any type of array
+let c: (string | number | boolean)[] = []; // any type of array
 c.push(1);
 c.push("hello");
 c.push(true);
@@ -40,3 +40,21 @@ c.push(true);
 c.forEach((element) => {
   console.log(element);
 });
+
+// ----- function -----
+
+// function type
+let myFunc: Function;
+
+myFunc = () => {
+  console.log("ok");
+};
+
+myFunc();
+
+// parameterized function
+const myfunc2 = (a: string, b: string) => {
+  console.log(`${a} + ${b}`);
+};
+
+myfunc2("abcd", "defg");
