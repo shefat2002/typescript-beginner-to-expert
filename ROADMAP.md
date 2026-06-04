@@ -751,11 +751,3 @@ Build these to solidify knowledge:
 - [tsconfig benchmark](https://github.com/microsoft/TypeScript/wiki/Performance) — optimization
 
 ---
-
-## Milestones
-
-✅ **Level 1 Complete** — You can read and write basic TypeScript code.
-✅ **Level 2 Complete** — You understand generics and utility types.
-✅ **Level 3 Complete** — You can design complex type systems.
-✅ **Level 4 Complete** — You understand how TypeScript works under the hood.
-✅ **Level 5 Complete** — You can architect large-scale type-safe codebases.
